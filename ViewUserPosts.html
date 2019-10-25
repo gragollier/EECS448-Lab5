@@ -1,0 +1,39 @@
+<html>
+    <head>
+        <title>Select User Post</title>
+    </head>
+    <body>
+        <h1 style="text-align: center;">View User Posts</h1>
+        <br />
+
+        <form action="ViewUserPosts.php" method="POST">
+            <select name="user_id" id="user_id">
+                    <?php 
+                    $mysqli = new mysqli("mysql.eecs.ku.edu", "ggollier", "uo7xaaxi", "ggollier");
+        
+                    /* check connection */
+                    if ($mysqli->connect_errno) {
+                        printf("Connect failed: %s\n", $mysqli->connect_error);
+                        exit();
+                    }
+        
+                    // This is literally asking for SQL injection... I'm sorry
+                    $result = $mysqli->query("SELECT user_id FROM Users");
+        
+                    if ($result) {
+                        while ($row = $result->fetch_assoc()) {
+                            printf ("<option value='%s'>%s</option>", $row["user_id"], $row["user_id"]);
+                        }
+                    } else {
+                        echo "Error getting users";
+                    }
+        
+                    $result->free();
+                    $mysqli->close();
+                    ?>
+
+            </select>
+            <button type="submit">Submit</button>
+        </form>
+    </body>
+</html>
